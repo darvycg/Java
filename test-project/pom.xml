@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>test-project</artifactId>
+	<artifactId>testProject</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>test-project</name>
+	<name>Test Automation Project</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -39,6 +39,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.microsoft.playwright</groupId>
+			<artifactId>playwright</artifactId>
+			<version>1.49.0</version>
 		</dependency>
 	</dependencies>
 
