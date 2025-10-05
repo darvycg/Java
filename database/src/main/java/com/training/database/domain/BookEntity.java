@@ -11,15 +11,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "authors")
-public class Author {
+@Table(name = "books")
+public class BookEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_id_seq")
-    private Long id = null;
+    private String isbn;
 
-    private String name;
+    private String title;
 
-    private Integer age;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "author_id")
+    private AuthorEntity authorEntity;
 
 }
