@@ -142,4 +142,67 @@ public class BookControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.author").value(updatedBook.getAuthorEntity())
         );
     }
+
+    @Test
+    public void testThatPartialUpdateBookReturns200AndBook() throws Exception {
+        BookEntity testBook = TestDataUtil.createTestBookA(null);
+        BookEntity updatedBook = bookService.createUpdateBook(testBook.getIsbn(), testBook);
+        updatedBook.setTitle("I messed up, so sorry!");
+        String savedTestBook = objectMapper.writeValueAsString(updatedBook);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/books/" + testBook.getIsbn())
+                        .contentType(String.valueOf(MediaType.APPLICATION_JSON))
+                        .content(savedTestBook)
+
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.isbn").value(updatedBook.getIsbn())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.title").value(updatedBook.getTitle())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.author").value(updatedBook.getAuthorEntity())
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdateOnNonExistentBookReturns404() throws Exception {
+        BookEntity testBook = TestDataUtil.createTestBookA(null);
+        String savedTestBook = objectMapper.writeValueAsString(testBook);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/books/" + testBook.getIsbn())
+                        .contentType(String.valueOf(MediaType.APPLICATION_JSON))
+                        .content(savedTestBook)
+
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatExistingDeleteBookReturns204() throws Exception {
+        BookEntity testBook = TestDataUtil.createTestBookA(null);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/books/" + testBook.getIsbn())
+                        .contentType(String.valueOf(MediaType.APPLICATION_JSON))
+
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+    }
+
+    @Test
+    public void testThatNonExistentDeleteBookReturns204() throws Exception {
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/books/1234567890")
+                        .contentType(String.valueOf(MediaType.APPLICATION_JSON))
+
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+    }
 }
