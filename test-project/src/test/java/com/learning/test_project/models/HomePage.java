@@ -2,14 +2,12 @@ package com.learning.test_project.models;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.junit.UsePlaywright;
 import com.microsoft.playwright.options.AriaRole;
-import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability;
+import lombok.Data;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-@Data
+@Getter
 @Component
 public class HomePage {
 
@@ -33,5 +31,9 @@ public class HomePage {
 
     public void navigate() {
         page.navigate("/");
+    }
+
+    public void clickElementsLink() {
+        this.getElementsLink().click();
     }
 }
