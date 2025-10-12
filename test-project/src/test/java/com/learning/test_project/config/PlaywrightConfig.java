@@ -1,0 +1,35 @@
+package com.learning.test_project.config;
+
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+@Configuration
+public class PlaywrightConfig {
+
+    @Bean(destroyMethod = "close")
+    public Playwright playwright() {
+        return Playwright.create();
+    }
+
+    @Bean(destroyMethod = "close")
+    public Browser browser(Playwright playwright) {
+        return playwright.chromium().launch();
+    }
+
+    @Bean
+    @Scope("prototype") // Creates a new instance for each test
+    public BrowserContext browserContext(Browser browser) {
+        return browser.newContext(new Browser.NewContextOptions().setBaseURL("https://demoqa.com/"));
+    }
+
+    @Bean
+    @Scope("prototype")
+    public Page page(BrowserContext browserContext) {
+        return browserContext.newPage();
+    }
+}
